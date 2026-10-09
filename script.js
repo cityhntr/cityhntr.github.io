@@ -51,18 +51,16 @@ const highlightNavLink = () => {
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
         const sectionHeight = section.clientHeight;
-        if (pageYOffset >= sectionTop - 200) {
+        if (window.pageYOffset >= sectionTop - 180) {
             current = section.getAttribute('id');
         }
     });
     
     navLinks.forEach(link => {
         link.classList.remove('active');
-        if (link.getAttribute('href').slice(1) === current) {
+        const href = link.getAttribute('href');
+        if (href && href.slice(1) === current) {
             link.classList.add('active');
-            link.style.color = 'var(--primary-color)';
-        } else {
-            link.style.color = 'var(--text-gray)';
         }
     });
 };
@@ -72,7 +70,6 @@ window.addEventListener('scroll', highlightNavLink);
 // Add click animation to buttons
 document.querySelectorAll('.btn, .project-link').forEach(btn => {
     btn.addEventListener('click', function(event) {
-        // Ripple effect
         const ripple = document.createElement('span');
         const rect = this.getBoundingClientRect();
         const size = Math.max(rect.width, rect.height);
@@ -90,19 +87,20 @@ document.querySelectorAll('.btn, .project-link').forEach(btn => {
     });
 });
 
-// Loader animation on page load
+// Initial state
 window.addEventListener('load', () => {
     document.body.style.opacity = '1';
+    highlightNavLink();
 });
 
 document.body.style.opacity = '0';
 document.body.style.transition = 'opacity 0.5s ease';
 
-// Add scroll animation for hero section
-const heroSection = document.querySelector('.hero');
+// Background parallax for hero
+the heroSection = document.querySelector('.hero');
 if (heroSection) {
     window.addEventListener('scroll', () => {
         const scrollY = window.scrollY;
-        heroSection.style.backgroundPosition = `0 ${scrollY * 0.5}px`;
+        heroSection.style.backgroundPosition = `center ${scrollY * 0.15}px`;
     });
 }
